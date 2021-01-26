@@ -1,8 +1,8 @@
 import cv2
 
 # face classifier
-face_detector = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
-smile_detector = cv2.CascadeClassifier('haarcascade_smile.xml')
+face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+smile_detector = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_smile.xml')
 # grab webcam feed
 webcam = cv2.VideoCapture(0)
 
@@ -22,9 +22,10 @@ while True:
 
         face_grayscale = cv2.cvtColor(face, cv2.COLOR_BGR2GRAY)
 
-    smiles = smile_detector.detectMultiScale(frame_grayscale, 1.7, 20)
+    smiles = smile_detector.detectMultiScale(frame_grayscale, scaleFactor=1.7, minNeighbors=20)
     for (x, y, w, h) in smiles:
         cv2.rectangle(frame, (x, y, w, h), (255, 200, 50), 4)
+        cv2.putText(frame, 'co się cieszysz?!', (x, y-20), fontScale=3, fontFace=cv2.FONT_HERSHEY_PLAIN, color=(255,0,0))
 
     #print(face)
     cv2.imshow('Why so serious?', frame)
